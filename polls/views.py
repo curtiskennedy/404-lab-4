@@ -25,10 +25,9 @@ def update_question(request, pk):
     Get the list of questions on our website
     """
     questions = Question.objects.get(id=pk)
-    questions.question_text = request.data.get("question_text", questions.question_text)
-    questions.pub_date = request.data.get("pub_date", questions.pub_date)
     serializer = QuestionSerializer(questions, data=request.data, partial=True)
     if serializer.is_valid():
+        serializer.save()
         return Response(serializer.data)
     return Response(status=400, data=serializer.errors)
 
